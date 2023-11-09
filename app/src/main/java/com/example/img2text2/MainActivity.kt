@@ -13,6 +13,7 @@ import android.os.Build.VERSION_CODES.P
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.Menu
 import android.widget.EditText
@@ -29,14 +30,19 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var takeImgBtn : MaterialButton
     private lateinit var detectImgBtn : MaterialButton
+    private lateinit var speakBtn : MaterialButton
+    private lateinit var stopSpeakBtn : MaterialButton
+
     private lateinit var imgView : ImageView
     private lateinit var resultText : TextView
     private lateinit var recognizer : TextRecognizer
+
 
     lateinit var progressDialog: ProgressDialog
 
@@ -50,13 +56,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraPermission: Array<String>
     private lateinit var storagePermission: Array<String>
 
+// text2speech
 
+    private lateinit var text2Speech: TextToSpeech
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         takeImgBtn = findViewById(R.id.take_img)
         detectImgBtn = findViewById(R.id.detect_img)
+        speakBtn = findViewById(R.id.speaker_btn)
+        stopSpeakBtn= findViewById(R.id.stop_speak_btn)
         imgView = findViewById(R.id.img_view)
         resultText = findViewById(R.id.result)
 
@@ -74,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         //
         takeImgBtn.setOnClickListener{
+
             showInputImageDialog()
         }
 
@@ -85,6 +96,32 @@ class MainActivity : AppCompatActivity() {
             else{
                 recognitionFromImage()
             }
+        }
+
+        speakBtn.setOnClickListener{
+            // show log
+            Log.v("TAG","speech resultText ${resultText.text.toString()} ")
+            if(resultText.text != null){
+                text2Speech = TextToSpeech(applicationContext,TextToSpeech.OnInitListener {
+                    if (it == TextToSpeech.SUCCESS){
+
+
+                        text2Speech.language = Locale.US
+                        text2Speech.setSpeechRate(0.1f)
+                        text2Speech.speak(resultText.text.toString(),TextToSpeech.QUEUE_ADD,null)
+                    }
+                    else{
+                        showToast("Language not available")
+                    }
+                })
+            }
+            else{
+                showToast("Set the input Image First")
+            }
+        }
+
+        stopSpeakBtn.setOnClickListener{
+            text2Speech.stop()
         }
 
     }
@@ -122,11 +159,13 @@ class MainActivity : AppCompatActivity() {
             val id= items.itemId
             if (id == 1){
             if (checkCameraPermissions()){
+
+                resultText.text = null
                     pickImageCamera()
                 }
                else{
                    requestCameraPermissions()
-                showToast("DONE")
+                showToast("FAILED")
 
                 }
 
@@ -135,12 +174,17 @@ class MainActivity : AppCompatActivity() {
 
             if (id == 2){
                if (checkStoragePermissions()){
+
+
+                   resultText.text = null
+
                     pickImage()
-                showToast("DONE")
 
               }
                 else{
                    requestStoragePermissions()
+                   showToast("FAILED")
+
                }
                 //pickImage()
             }

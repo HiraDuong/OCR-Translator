@@ -5,7 +5,10 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Notification.Action
 import android.app.ProgressDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,6 +19,7 @@ import android.provider.MediaStore
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -43,6 +47,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resultText : TextView
     private lateinit var recognizer : TextRecognizer
 
+    private lateinit var translateBtn: MaterialButton
+    private lateinit var copyBtn: MaterialButton
+    private lateinit var clearBtn: MaterialButton
 
     lateinit var progressDialog: ProgressDialog
 
@@ -69,8 +76,9 @@ class MainActivity : AppCompatActivity() {
         stopSpeakBtn= findViewById(R.id.stop_speak_btn)
         imgView = findViewById(R.id.img_view)
         resultText = findViewById(R.id.result)
-
-
+        translateBtn = findViewById(R.id.btn_translate)
+        clearBtn = findViewById(R.id.clear_btn)
+        copyBtn = findViewById(R.id.btn_copy)
         //get permisson
         cameraPermission = arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storagePermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -82,7 +90,20 @@ class MainActivity : AppCompatActivity() {
 
         //recognizer
         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        //
+        // speaker
+        text2Speech = TextToSpeech(applicationContext,TextToSpeech.OnInitListener {
+            if (it == TextToSpeech.SUCCESS){
+
+
+                text2Speech.language = Locale.US
+                text2Speech.setSpeechRate(0.1f)
+
+            }
+            else{
+                showToast("Language not available")
+            }
+        })
+
         takeImgBtn.setOnClickListener{
 
             showInputImageDialog()
@@ -101,29 +122,57 @@ class MainActivity : AppCompatActivity() {
         speakBtn.setOnClickListener{
             // show log
             Log.v("TAG","speech resultText ${resultText.text.toString()} ")
-            if(resultText.text != null){
-                text2Speech = TextToSpeech(applicationContext,TextToSpeech.OnInitListener {
-                    if (it == TextToSpeech.SUCCESS){
-
-
-                        text2Speech.language = Locale.US
-                        text2Speech.setSpeechRate(0.1f)
-                        text2Speech.speak(resultText.text.toString(),TextToSpeech.QUEUE_ADD,null)
-                    }
-                    else{
-                        showToast("Language not available")
-                    }
-                })
+            if(resultText.text.isNotEmpty()){
+                showToast("Speaker is ready to speak!")
+                text2Speech.speak(resultText.text.toString(),TextToSpeech.QUEUE_ADD,null)
             }
             else{
                 showToast("Set the input Image First")
             }
+            if (text2Speech.isSpeaking){
+                text2Speech.stop()
+                showToast("Speaker ready to speak again")
+                text2Speech.speak(resultText.text.toString(),TextToSpeech.QUEUE_ADD,null)
+            }
         }
 
         stopSpeakBtn.setOnClickListener{
-            text2Speech.stop()
+            if (text2Speech.isSpeaking){
+                showToast("Speaker is stopped")
+                text2Speech.stop()
+            }
+            else{
+                showToast("Speaker is not speaking")
+            }
         }
 
+        translateBtn.setOnClickListener {
+            val intent = Intent(this, TranslateActivity::class.java)
+            // truyền result detect sang Translate
+            intent.putExtra("detectResult",resultText.text.toString())
+
+            startActivity(intent)
+        }
+
+        copyBtn.setOnClickListener {
+            val textToCopy = resultText.text.toString()
+
+            // Lấy ClipboardManager từ hệ thống
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+            // Tạo một đối tượng ClipData để lưu trữ nội dung cần sao chép
+            val clipData = ClipData.newPlainText("label", textToCopy)
+
+            // Đặt dữ liệu vào ClipboardManager
+            clipboardManager.setPrimaryClip(clipData)
+
+            // Thông báo hoặc làm bất kỳ điều gì khác khi đã sao chép thành công
+            Toast.makeText(this, "Đã sao chép vào bộ nhớ đệm", Toast.LENGTH_SHORT).show()
+        }
+
+        clearBtn.setOnClickListener {
+            resultText.text = ""
+        }
     }
 
     private fun recognitionFromImage() {
@@ -135,8 +184,9 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener {text->
                     progressDialog.dismiss()
                     val recognizeText = text.text
-
                     resultText.setText(recognizeText)
+                    translateBtn.visibility = View.VISIBLE
+                    copyBtn.visibility = View.VISIBLE
                 }
 
                 .addOnFailureListener{e->
@@ -160,8 +210,8 @@ class MainActivity : AppCompatActivity() {
             if (id == 1){
             if (checkCameraPermissions()){
 
-                resultText.text = null
-                    pickImageCamera()
+                resultText.text = ""
+                pickImageCamera()
                 }
                else{
                    requestCameraPermissions()

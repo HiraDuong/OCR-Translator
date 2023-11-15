@@ -80,4 +80,9 @@ dependencies {
     // To recognize Korean script
     implementation ("com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0")
 }
+//translate
+dependencies {
+    // ...
 
+    implementation("com.google.mlkit:translate:17.0.2")
+}

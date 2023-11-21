@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/linear_1">
+        <ImageView
+            android:id="@+id/logo_app"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/name_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/linear_1"
+        android:text="Img2Speech Translator"
+        android:textSize="30dp" />
+
+    
+
+    <TextView
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="developed by hira"
+        android:id="@+id/dev_name"
+        android:layout_below="@+id/name_app"/>
+    <TextView
+        android:gravity="center"
+        android:textSize="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xin Chào !"
+        android:id="@+id/hello_text"
+        android:layout_below="@+id/dev_name"/>
+    <TextView
+        android:gravity="center"
+        android:textSize="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="こんにちは。"
+        android:id="@+id/hello_text2"
+        android:layout_below="@+id/hello_text"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btn_translate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#4CAF50"
+            android:text="TRANSLATE"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/btn_img2text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#4CAF50"
+            android:text="IMG2TEXT"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

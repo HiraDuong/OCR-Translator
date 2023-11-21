@@ -33,6 +33,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
+import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.util.Locale
 
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imgView : ImageView
     private lateinit var resultText : TextView
     private lateinit var recognizer : TextRecognizer
+    private lateinit var langRecognize: MaterialButton
+
+    lateinit var popupMenu : PopupMenu
 
     private lateinit var translateBtn: MaterialButton
     private lateinit var copyBtn: MaterialButton
@@ -80,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         clearBtn = findViewById(R.id.clear_btn)
         copyBtn = findViewById(R.id.btn_copy)
         //get permisson
-        cameraPermission = arrayOf(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        storagePermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        cameraPermission = arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE)
+        storagePermission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
         //progress
         progressDialog = ProgressDialog(this)
@@ -90,6 +95,14 @@ class MainActivity : AppCompatActivity() {
 
         //recognizer
         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        langRecognize = findViewById(R.id.language_recognize_btn)
+
+        // When using Japanese script library
+//        val recognizerJP = TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
+//        // When using Chinese script library
+//        val recognizerCN = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
+
+
         // speaker
         text2Speech = TextToSpeech(applicationContext,TextToSpeech.OnInitListener {
             if (it == TextToSpeech.SUCCESS){
@@ -116,6 +129,43 @@ class MainActivity : AppCompatActivity() {
 
             else{
                 recognitionFromImage()
+            }
+        }
+
+        popupMenu = PopupMenu(this,langRecognize)
+        popupMenu.menu.add("ENGLISH")
+        popupMenu.menu.add("VIETNAMESE")
+        popupMenu.menu.add("CHINESE")
+        popupMenu.menu.add("JAPANESE")
+        langRecognize.setOnClickListener {
+            popupMenu.show()
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.title) {
+                    "ENGLISH" -> {
+                        langRecognize.text = "ENGLISH"
+                        recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                        true
+                    }
+                    "VIETNAMESE" -> {
+                        langRecognize.text = "VIETNAMESE"
+                        recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                        true
+                    }
+                    "CHINESE" -> {
+                        langRecognize.text = "CHINESE"
+                         recognizer = TextRecognition.getClient(ChineseTextRecognizerOptions.Builder().build())
+                        text2Speech.language = Locale.CHINA
+                        true
+                    } "JAPANESE" -> {
+                    langRecognize.text = "JAPANESE"
+                    // When using Japanese script library
+                     recognizer= TextRecognition.getClient(JapaneseTextRecognizerOptions.Builder().build())
+                    text2Speech.language = Locale.JAPAN
+
+                    true
+                }
+                    else -> false
+                }
             }
         }
 
@@ -225,16 +275,13 @@ class MainActivity : AppCompatActivity() {
             if (id == 2){
                if (checkStoragePermissions()){
 
-
                    resultText.text = null
-
                     pickImage()
 
               }
                 else{
                    requestStoragePermissions()
                    showToast("FAILED")
-
                }
                 //pickImage()
             }
@@ -284,18 +331,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private  fun checkStoragePermissions():Boolean{
-        val storageResult= ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        val storageResult= ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         Log.v("TAG",(storageResult).toString())
-        Log.v("TAG2",(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) ).toString())
+        Log.v("TAG2",(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) ).toString())
         //return storageResult
         return true
     }
 
     private fun checkCameraPermissions():Boolean{
         val cameraResult = ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-        val storageResult = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        Log.v("TAG",(cameraResult && storageResult).toString())
-        Log.v("TAG2",(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) ).toString())
+        val storageResult = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        Log.v("TAG-camera",(cameraResult && storageResult).toString())
+        Log.v("TAG2-camera",(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) ).toString())
 
         return cameraResult
     }
@@ -331,6 +378,9 @@ class MainActivity : AppCompatActivity() {
             STORAGE_REQUEST_CODE->{
                 if(grantResults.isNotEmpty()){
                     val storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    Log.d("TAG-permission","PackageManager.PERMISSION_GRANTED ${PackageManager.PERMISSION_GRANTED}")
+                    Log.d("TAG-permission","grantResults[0] ${grantResults[0]}")
+
                     if (storageAccepted){
                         pickImage()
                     }

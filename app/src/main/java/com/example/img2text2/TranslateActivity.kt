@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
@@ -86,13 +88,14 @@ class TranslateActivity : AppCompatActivity() {
 
         translateBtn.setOnClickListener {
             validateData()
+
         }
 
+        var detectResultInput = intent.getStringExtra("detectResult").toString()
         useDetectResult.setOnClickListener {
             try {
-                val detectResultInput = intent.getStringExtra("detectResult").toString()
                 Log.d(TAG,"detectResult: $detectResultInput")
-                if (detectResultInput.isEmpty()){
+                if (detectResultInput.isEmpty() || detectResultInput == "null"){
                     val mainIntent = Intent(this, MainActivity::class.java)
                     showToast("Detect Result is Empty. Please detect an Image")
                     startActivity(mainIntent)
@@ -148,6 +151,7 @@ class TranslateActivity : AppCompatActivity() {
         clearBtn.setOnClickListener {
             inputText.text = null
             outputText.text = ""
+            detectResultInput = ""
         }
 
     }
@@ -257,7 +261,12 @@ class TranslateActivity : AppCompatActivity() {
             outputLanguageTitle = languageArrayList!![position].languageTitle
 
             outputLangBtn.text = outputLanguageTitle
-
+            if(outputLanguageCode =="ja"){
+                text2Speech.language = Locale.JAPAN
+            }
+            if(outputLanguageCode =="zh"){
+                text2Speech.language = Locale.CHINA
+            }
             Log.d(TAG,"inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
             false
         }

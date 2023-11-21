@@ -65,6 +65,7 @@ dependencies {
     implementation ("com.google.mlkit:text-recognition-korean:16.0.0")
 }
 
+// text  recognize
 dependencies {
     // To recognize Latin script
     implementation ("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")

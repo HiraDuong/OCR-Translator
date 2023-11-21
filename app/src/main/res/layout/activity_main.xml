@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scroll_layout"
-
+        android:layout_alignParentTop="true"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linear1">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/take_img"
@@ -22,6 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:text="TAKE IMAGE"
+            android:layout_weight="1"
+            app:cornerRadius="5dp"
             app:icon="@drawable/ic_camera" />
 
         <com.google.android.material.button.MaterialButton
@@ -30,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="DETECT IMAGE"
+            android:layout_weight="1"
+            app:cornerRadius="5dp"
             app:icon="@drawable/ic_scan" />
 
     </LinearLayout>
@@ -37,8 +41,9 @@
     <ScrollView
         android:id="@+id/scroll_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp">
+        android:layout_height="600dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/linear1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,54 +53,19 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="400dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/avt"
-                app:strokeWidth="2dp" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/clear_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="CLEAR"
-                    app:cornerRadius="5dp"
-                    app:icon="@drawable/ic_clear"
-                    app:iconGravity="top"/>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/speaker_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="SPEAK"
-                    app:cornerRadius="5dp"
-                    app:iconGravity="top"
-                    app:icon="@drawable/ic_speaker" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/stop_speak_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="STOP"
-                    app:cornerRadius="5dp"
-                    app:iconGravity="top"
-                    app:icon="@drawable/ic_stop" />
-            </LinearLayout>
+                app:strokeWidth="2dp"
+               />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Result:"
+                android:text="RESULT:"
                 android:textColor="#D21F1F"
-                android:textSize="20dp" />
+                android:textSize="24dp" />
 
             <TextView
                 android:id="@+id/result"
@@ -111,19 +81,21 @@
                 android:gravity="center">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_translate"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+
                 android:text="TRANSLATE"
+                android:layout_weight="1"
                 app:icon="@drawable/ic_translate"
                 android:visibility="visible"
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_copy"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:text="COPY"
+                android:layout_weight="1"
                 app:icon="@drawable/ic_copy"
                 android:visibility="gone"/>
             </LinearLayout>
@@ -131,6 +103,58 @@
         </LinearLayout>
 
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_above="@id/speak_btn_layout">
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="LATIN"
+            app:cornerRadius="5dp"
+            android:id="@+id/language_recognize_btn"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/speak_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="CLEAR"
+            app:cornerRadius="5dp"
+            android:padding="5dp"
+            app:icon="@drawable/ic_clear"
+            app:iconGravity="" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/speaker_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="SPEAK"
+            app:cornerRadius="5dp"
+            android:padding="5dp"
+            app:icon="@drawable/ic_speaker"
+            app:iconGravity="" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stop_speak_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="STOP"
+            app:cornerRadius="5dp"
+            android:padding="5dp"
+            app:icon="@drawable/ic_stop"
+            app:iconGravity="" />
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -23,12 +23,11 @@ import java.util.Locale
 
 class TranslateActivity : AppCompatActivity() {
 
-    private var languageArrayList : ArrayList<ModelLanguage>? = null
+    private var languageArrayList: ArrayList<ModelLanguage>? = null
 
-    companion object{
+    companion object {
         private const val TAG = "MAIN_TAG"
     }
-
 
 
     private var inputLanguageCode = "en"
@@ -37,25 +36,25 @@ class TranslateActivity : AppCompatActivity() {
     private var outputLanguageTitle = "Vietnamese"
 
 
-    private lateinit var inputText : EditText
-    private lateinit var useDetectResult :MaterialButton
-    private lateinit var outputText : TextView
-    private lateinit var inputLangBtn : MaterialButton
+    private lateinit var inputText: EditText
+    private lateinit var useDetectResult: MaterialButton
+    private lateinit var outputText: TextView
+    private lateinit var inputLangBtn: MaterialButton
     private lateinit var outputLangBtn: MaterialButton
-    private lateinit var translateBtn : MaterialButton
+    private lateinit var translateBtn: MaterialButton
 
-    private lateinit var speakBtn : MaterialButton
+    private lateinit var speakBtn: MaterialButton
     private lateinit var stopSpeakBtn: MaterialButton
     private lateinit var clearBtn: MaterialButton
-
 
 
     // translator
     private lateinit var translatorOptions: TranslatorOptions
     private lateinit var translator: Translator
     private lateinit var text2Speech: TextToSpeech
+
     //dialog
-    private lateinit var progressDialog : ProgressDialog
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_translate)
@@ -67,9 +66,9 @@ class TranslateActivity : AppCompatActivity() {
         outputLangBtn = findViewById(R.id.out_lang_btn)
         translateBtn = findViewById(R.id.btn_translate2)
 
-        speakBtn= findViewById(R.id.speaker_btn)
-        stopSpeakBtn= findViewById(R.id.stop_speak_btn)
-        clearBtn= findViewById(R.id.clear_btn)
+        speakBtn = findViewById(R.id.speaker_btn)
+        stopSpeakBtn = findViewById(R.id.stop_speak_btn)
+        clearBtn = findViewById(R.id.clear_btn)
 
         //progress init
         progressDialog = ProgressDialog(this)
@@ -94,17 +93,15 @@ class TranslateActivity : AppCompatActivity() {
         var detectResultInput = intent.getStringExtra("detectResult").toString()
         useDetectResult.setOnClickListener {
             try {
-                Log.d(TAG,"detectResult: $detectResultInput")
-                if (detectResultInput.isEmpty() || detectResultInput == "null"){
+                Log.d(TAG, "detectResult: $detectResultInput")
+                if (detectResultInput.isEmpty() || detectResultInput == "null") {
                     val mainIntent = Intent(this, MainActivity::class.java)
                     showToast("Detect Result is Empty. Please detect an Image")
                     startActivity(mainIntent)
-                }
-                else{
+                } else {
                     inputText.setText(detectResultInput)
                 }
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 showToast("Can not use Detect Result")
             }
         }
@@ -112,39 +109,36 @@ class TranslateActivity : AppCompatActivity() {
 
         // speaker
         text2Speech = TextToSpeech(applicationContext, TextToSpeech.OnInitListener {
-            if (it == TextToSpeech.SUCCESS){
+            if (it == TextToSpeech.SUCCESS) {
 
 
                 text2Speech.language = Locale.US
                 text2Speech.setSpeechRate(0.1f)
 
-            }
-            else{
+            } else {
                 showToast("Language not available")
             }
         })
         speakBtn.setOnClickListener {
             // show log
-            Log.v("TAG","speech resultText ${outputText.text.toString()} ")
-            if(outputText.text.isNotEmpty()){
+            Log.v("TAG", "speech resultText ${outputText.text.toString()} ")
+            if (outputText.text.isNotEmpty()) {
                 showToast("Speaker is ready to speak!")
-                text2Speech.speak(outputText.text.toString(),TextToSpeech.QUEUE_ADD,null)
-            }
-            else{
+                text2Speech.speak(outputText.text.toString(), TextToSpeech.QUEUE_ADD, null)
+            } else {
                 showToast("Set the input Image First")
             }
-            if (text2Speech.isSpeaking){
+            if (text2Speech.isSpeaking) {
                 text2Speech.stop()
                 showToast("Speaker ready to speak again")
-                text2Speech.speak(outputText.text.toString(),TextToSpeech.QUEUE_ADD,null)
+                text2Speech.speak(outputText.text.toString(), TextToSpeech.QUEUE_ADD, null)
             }
         }
         stopSpeakBtn.setOnClickListener {
-            if (text2Speech.isSpeaking){
+            if (text2Speech.isSpeaking) {
                 showToast("Speaker is stopped")
                 text2Speech.stop()
-            }
-            else{
+            } else {
                 showToast("Speaker is not speaking")
             }
         }
@@ -160,12 +154,11 @@ class TranslateActivity : AppCompatActivity() {
     private fun validateData() {
         inputLanguageText = inputText.text.toString().trim()
 
-        Log.d(TAG,"validateData: inputText : $inputLanguageText")
+        Log.d(TAG, "validateData: inputText : $inputLanguageText")
 
-        if(inputLanguageText.isEmpty()){
+        if (inputLanguageText.isEmpty()) {
             showToast("No text input")
-        }
-        else{
+        } else {
             startTranslation()
         }
     }
@@ -185,23 +178,23 @@ class TranslateActivity : AppCompatActivity() {
 
         translator.downloadModelIfNeeded(downloadConditions)
             .addOnSuccessListener {
-                Log.d(TAG,"start Translate")
+                Log.d(TAG, "start Translate")
                 progressDialog.setMessage("Translating...")
                 translator.translate(inputLanguageText)
-                    .addOnSuccessListener {translatedText->
-                        Log.d(TAG,"Translated Text: $translatedText")
+                    .addOnSuccessListener { translatedText ->
+                        Log.d(TAG, "Translated Text: $translatedText")
                         progressDialog.dismiss()
                         outputText.text = translatedText
                     }
-                    .addOnFailureListener{e->
+                    .addOnFailureListener { e ->
                         progressDialog.dismiss()
-                        Log.e(TAG,"Translated Text:",e)
+                        Log.e(TAG, "Translated Text:", e)
                         showToast("Failed to translate due to ${e.message}")
                     }
             }
-            .addOnFailureListener{e->
+            .addOnFailureListener { e ->
                 progressDialog.dismiss()
-                Log.d(TAG,"download failed",e)
+                Log.d(TAG, "download failed", e)
                 showToast("Failed to download due to ${e.message}")
             }
     }
@@ -211,14 +204,14 @@ class TranslateActivity : AppCompatActivity() {
 
         val languageCodeList = TranslateLanguage.getAllLanguages()
 
-        for (languageCode in languageCodeList){
-            val  languageTitle = Locale(languageCode).displayLanguage
-            Log.d(TAG,"loadAvailableLanguage: langCode:$languageCode")
-            Log.d(TAG,"loadAvailableLanguage: langCode:$languageTitle")
+        for (languageCode in languageCodeList) {
+            val languageTitle = Locale(languageCode).displayLanguage
+            Log.d(TAG, "loadAvailableLanguage: langCode:$languageCode")
+            Log.d(TAG, "loadAvailableLanguage: langCode:$languageTitle")
 
             //create lang model
 
-            val  modelLanguage = ModelLanguage(languageCode,languageTitle)
+            val modelLanguage = ModelLanguage(languageCode, languageTitle)
 
             languageArrayList!!.add(modelLanguage)
 
@@ -227,53 +220,53 @@ class TranslateActivity : AppCompatActivity() {
 
     //  popup menu
 
-    private fun inputLanguageChoose(){
-        val popupMenu = PopupMenu(this,inputLangBtn)
+    private fun inputLanguageChoose() {
+        val popupMenu = PopupMenu(this, inputLangBtn)
 
-        for (i in languageArrayList!!.indices){
-            popupMenu.menu.add(Menu.NONE,i,i, languageArrayList!![i].languageTitle)
+        for (i in languageArrayList!!.indices) {
+            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
         }
         popupMenu.show()
 
-        popupMenu.setOnMenuItemClickListener {menuItem->
+        popupMenu.setOnMenuItemClickListener { menuItem ->
             val position = menuItem.itemId
             inputLanguageCode = languageArrayList!![position].languageCode
             inputLanguageTitle = languageArrayList!![position].languageTitle
 
             inputLangBtn.text = inputLanguageTitle
             inputText.hint = "Enter $inputLanguageTitle"
-            Log.d(TAG,"inputLangChoose: Code :$inputLanguageCode, Title:$inputLanguageTitle")
+            Log.d(TAG, "inputLangChoose: Code :$inputLanguageCode, Title:$inputLanguageTitle")
             false
         }
     }
 
-    private fun outputLanguageChoose(){
-        val popupMenu = PopupMenu(this,outputLangBtn)
+    private fun outputLanguageChoose() {
+        val popupMenu = PopupMenu(this, outputLangBtn)
 
-        for (i in languageArrayList!!.indices){
-            popupMenu.menu.add(Menu.NONE,i,i, languageArrayList!![i].languageTitle)
+        for (i in languageArrayList!!.indices) {
+            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
         }
         popupMenu.show()
 
-        popupMenu.setOnMenuItemClickListener {menuItem->
+        popupMenu.setOnMenuItemClickListener { menuItem ->
             val position = menuItem.itemId
             outputLanguageCode = languageArrayList!![position].languageCode
             outputLanguageTitle = languageArrayList!![position].languageTitle
 
             outputLangBtn.text = outputLanguageTitle
-            if(outputLanguageCode =="ja"){
+            if (outputLanguageCode == "ja") {
                 text2Speech.language = Locale.JAPAN
             }
-            if(outputLanguageCode =="zh"){
+            if (outputLanguageCode == "zh") {
                 text2Speech.language = Locale.CHINA
             }
-            Log.d(TAG,"inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
+            Log.d(TAG, "inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
             false
         }
     }
 
-    private fun showToast(message: String){
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     }
 }

@@ -5,16 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StartActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/linear_1">
+        android:id="@+id/linear_1"
+        android:layout_marginTop="100dp">
+
         <ImageView
             android:id="@+id/logo_app"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            />
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/appicon" />
     </LinearLayout>
 
 
@@ -24,35 +27,41 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_below="@+id/linear_1"
-        android:text="Img2Speech Translator"
-        android:textSize="30dp" />
+        android:text="OCR Translator"
+        android:textSize="30dp"
+        android:layout_marginTop="10dp" />
 
-    
 
     <TextView
         android:gravity="right"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="developed by hira"
         android:id="@+id/dev_name"
-        android:layout_below="@+id/name_app"/>
+        android:layout_below="@+id/name_app" />
+
     <TextView
         android:gravity="center"
         android:textSize="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xin Chào !"
+        android:layout_marginTop="10dp"
         android:id="@+id/hello_text"
-        android:layout_below="@+id/dev_name"/>
+        android:layout_below="@+id/dev_name" />
+
     <TextView
         android:gravity="center"
         android:textSize="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="こんにちは。"
+        android:layout_marginTop="10dp"
         android:id="@+id/hello_text2"
-        android:layout_below="@+id/hello_text"/>
+        android:layout_below="@+id/hello_text" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +78,7 @@
             android:text="TRANSLATE"
             android:textColor="@color/white"
             app:cornerRadius="5dp"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp" />
 
         <Button
             android:id="@+id/btn_img2text"
@@ -80,7 +89,7 @@
             android:text="IMG2TEXT"
             android:textColor="@color/white"
             app:cornerRadius="5dp"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp" />
     </LinearLayout>
 
 </RelativeLayout>

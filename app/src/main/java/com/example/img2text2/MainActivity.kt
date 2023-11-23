@@ -148,7 +148,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     "VIETNAMESE" -> {
                         langRecognize.text = "VIETNAMESE"
+
                         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                        //text2Speech.language = Locale.
+
                         true
                     }
                     "CHINESE" -> {

@@ -111,7 +111,8 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="LATIN"
+            android:text="ENGLISH"
+            android:layout_marginBottom="10dp"
             app:cornerRadius="5dp"
             android:id="@+id/language_recognize_btn"/>
     </LinearLayout>
@@ -126,18 +127,20 @@
             android:id="@+id/clear_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+
             android:text="CLEAR"
             app:cornerRadius="5dp"
             android:padding="5dp"
             app:icon="@drawable/ic_clear"
-            app:iconGravity="" />
+            app:iconGravity=""
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/speaker_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:text="SPEAK"
             app:cornerRadius="5dp"
             android:padding="5dp"
@@ -148,7 +151,7 @@
             android:id="@+id/stop_speak_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+
             android:text="STOP"
             app:cornerRadius="5dp"
             android:padding="5dp"

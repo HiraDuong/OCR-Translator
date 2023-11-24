@@ -143,6 +143,7 @@ class MainActivity : AppCompatActivity() {
                         langRecognize.text = "ENGLISH"
                         recognizer =
                             TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                        text2Speech.language = Locale.US
                         true
                     }
 
@@ -152,6 +153,8 @@ class MainActivity : AppCompatActivity() {
                         recognizer =
                             TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                         //text2Speech.language = Locale.
+                        text2Speech.language = Locale.US
+
 
                         true
                     }
@@ -210,7 +213,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, TranslateActivity::class.java)
             // truyền result detect sang Translate
             intent.putExtra("detectResult", resultText.text.toString())
-
+            if (text2Speech.isSpeaking) {
+                text2Speech.stop()
+            }
             startActivity(intent)
         }
 

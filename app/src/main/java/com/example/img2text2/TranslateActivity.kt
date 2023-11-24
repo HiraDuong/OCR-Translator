@@ -19,6 +19,10 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
+import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.util.Locale
 
 class TranslateActivity : AppCompatActivity() {
@@ -222,47 +226,131 @@ class TranslateActivity : AppCompatActivity() {
 
     private fun inputLanguageChoose() {
         val popupMenu = PopupMenu(this, inputLangBtn)
-
-        for (i in languageArrayList!!.indices) {
-            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
-        }
+/////////////////////////////////////////////////////////////////
+//        for (i in languageArrayList!!.indices) {
+//            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
+//        }
+//        popupMenu.show()
+//
+//        popupMenu.setOnMenuItemClickListener { menuItem ->
+//            val position = menuItem.itemId
+//            inputLanguageCode = languageArrayList!![position].languageCode
+//            inputLanguageTitle = languageArrayList!![position].languageTitle
+//
+//            inputLangBtn.text = inputLanguageTitle
+//            inputText.hint = "Enter $inputLanguageTitle"
+//            Log.d(TAG, "inputLangChoose: Code :$inputLanguageCode, Title:$inputLanguageTitle")
+//            false
+//        }
+//        ////////////////////////////////////////////////////////
+        popupMenu.menu.add("ENGLISH")
+        popupMenu.menu.add("VIETNAMESE")
+        popupMenu.menu.add("CHINESE")
+        popupMenu.menu.add("JAPANESE")
         popupMenu.show()
 
         popupMenu.setOnMenuItemClickListener { menuItem ->
-            val position = menuItem.itemId
-            inputLanguageCode = languageArrayList!![position].languageCode
-            inputLanguageTitle = languageArrayList!![position].languageTitle
+            when (menuItem.title) {
+                "ENGLISH" -> {
+                    inputLangBtn.text = "ENGLISH"
+                    inputLanguageCode = "en"
+                    true
+                }
 
-            inputLangBtn.text = inputLanguageTitle
-            inputText.hint = "Enter $inputLanguageTitle"
-            Log.d(TAG, "inputLangChoose: Code :$inputLanguageCode, Title:$inputLanguageTitle")
-            false
+                "VIETNAMESE" -> {
+                    inputLangBtn.text = "VIETNAMESE"
+                    inputLanguageCode = "vi"
+
+                    true
+                }
+
+                "CHINESE" -> {
+                    inputLangBtn.text = "CHINESE"
+                    inputLanguageCode = "zh"
+                    true
+                }
+
+                "JAPANESE" -> {
+                    inputLangBtn.text = "JAPANESE"
+                    inputLanguageCode = "ja"
+                    true
+                }
+
+                else -> false
+            }
         }
+
     }
 
     private fun outputLanguageChoose() {
         val popupMenu = PopupMenu(this, outputLangBtn)
+//
+//        for (i in languageArrayList!!.indices) {
+//            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
+//        }
+//        popupMenu.show()
+//
+//        popupMenu.setOnMenuItemClickListener { menuItem ->
+//            val position = menuItem.itemId
+//            outputLanguageCode = languageArrayList!![position].languageCode
+//            outputLanguageTitle = languageArrayList!![position].languageTitle
+//
+//            outputLangBtn.text = outputLanguageTitle
+//            if (outputLanguageCode == "ja") {
+//                text2Speech.language = Locale.JAPAN
+//            }
+//            else if (outputLanguageCode == "zh") {
+//                text2Speech.language = Locale.CHINA
+//            }
+//            else{
+//                text2Speech.language = Locale.US
+//            }
+//            Log.d(TAG, "inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
+//            false
+//        }
 
-        for (i in languageArrayList!!.indices) {
-            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
-        }
+        /////////////////////////////
+        popupMenu.menu.add("ENGLISH")
+        popupMenu.menu.add("VIETNAMESE")
+        popupMenu.menu.add("CHINESE")
+        popupMenu.menu.add("JAPANESE")
         popupMenu.show()
 
         popupMenu.setOnMenuItemClickListener { menuItem ->
-            val position = menuItem.itemId
-            outputLanguageCode = languageArrayList!![position].languageCode
-            outputLanguageTitle = languageArrayList!![position].languageTitle
+            when (menuItem.title) {
+                "ENGLISH" -> {
+                    outputLangBtn.text = "ENGLISH"
+                    outputLanguageCode = "en"
+                    text2Speech.language = Locale.US
+                    true
+                }
 
-            outputLangBtn.text = outputLanguageTitle
-            if (outputLanguageCode == "ja") {
-                text2Speech.language = Locale.JAPAN
+                "VIETNAMESE" -> {
+                    outputLangBtn.text = "VIETNAMESE"
+                    outputLanguageCode = "vi"
+                    text2Speech.language = Locale.US
+
+                    true
+                }
+
+                "CHINESE" -> {
+                    outputLangBtn.text = "CHINESE"
+                    outputLanguageCode = "zh"
+                    text2Speech.language = Locale.CHINA
+                    true
+                }
+
+                "JAPANESE" -> {
+                    outputLangBtn.text = "JAPANESE"
+                    outputLanguageCode = "ja"
+                    text2Speech.language = Locale.JAPANESE
+                    true
+                }
+
+                else -> false
             }
-            if (outputLanguageCode == "zh") {
-                text2Speech.language = Locale.CHINA
-            }
-            Log.d(TAG, "inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
-            false
         }
+        ////////////////////////////
     }
 
     private fun showToast(message: String) {

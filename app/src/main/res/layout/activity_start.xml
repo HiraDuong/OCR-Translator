@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="developed by hira"
+        android:text="Developed by Hira"
         android:id="@+id/dev_name"
         android:layout_below="@+id/name_app" />
 

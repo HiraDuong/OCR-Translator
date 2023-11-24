@@ -20,6 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="ENGLISH"
+            app:cornerRadius="5dp"
             android:id="@+id/input_lang_btn"
             android:layout_weight="1"
             android:layout_margin="5dp" />
@@ -28,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="VIETNAMESE"
+            app:cornerRadius="5dp"
             android:id="@+id/out_lang_btn"
             android:layout_weight="1"
             android:layout_margin="5dp" />
@@ -39,50 +41,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <EditText
+                android:id="@+id/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:hint="Enter Input"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#E5E5E5"
                 android:gravity="top"
-                android:id="@+id/input_text" />
+                android:hint="Enter Input" />
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:background="#FFEB3B"
                 android:text="OR"
-                android:textColor="#FF0000"
-                android:textSize="20dp" />
+                android:textColor="#03A9F4"
+                android:textSize="20dp"
+
+                android:padding="5dp"
+                android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
+                android:id="@+id/use_detect_result"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/btn_translate"
-                android:id="@+id/use_detect_result"
-                android:text="USE DETECT RESULT" />
+                android:layout_marginTop="5dp"
+
+                android:text="@string/use_detect_image_result"
+                app:cornerRadius="10dp"
+                app:backgroundTint="#8BC34A" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="#FFEB3B"
                 android:text="TRANSLATE RESULT"
-                android:textColor="#0505FF"
-                android:textSize="24dp" />
+                android:layout_marginTop="5dp"
+                android:textColor="#03A9F4"
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="250dp">
 
                 <TextView
                     android:id="@+id/output_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
                     android:text=""
-                    android:textSize="18sp"
-                    android:layout_marginTop="5dp" />
+                    android:textSize="18sp" />
             </ScrollView>
         </LinearLayout>
 
@@ -135,11 +155,13 @@
 
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_translate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TRANSLATE"
-        android:id="@+id/btn_translate2"
         android:layout_alignParentBottom="true"
+        android:text="TRANSLATE"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#00BCD4"
         app:icon="@drawable/ic_translate" />
 
 

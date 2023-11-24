@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OCR Translator</string>
+    <string name="use_detect_image_result">USE DETECT IMAGE RESULT</string>
 </resources>

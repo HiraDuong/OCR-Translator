@@ -62,9 +62,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="#FFC107"
                 android:text="RESULT:"
-                android:textColor="#D21F1F"
-                android:textSize="24dp" />
+                android:textColor="#028DFC"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:padding="5dp" />
 
             <TextView
                 android:id="@+id/result"
@@ -85,9 +88,11 @@
                     android:layout_height="wrap_content"
 
                     android:text="TRANSLATE"
+                    app:backgroundTint="#00BCD4"
+
                     android:layout_weight="1"
                     app:icon="@drawable/ic_translate"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_copy"
@@ -95,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:text="COPY"
+                    app:backgroundTint="#00BCD4"
                     android:layout_weight="1"
                     app:icon="@drawable/ic_copy"
                     android:visibility="gone" />

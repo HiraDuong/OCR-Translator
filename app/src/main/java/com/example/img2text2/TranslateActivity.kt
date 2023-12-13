@@ -285,29 +285,7 @@ class TranslateActivity : AppCompatActivity() {
     private fun outputLanguageChoose() {
         val popupMenu = PopupMenu(this, outputLangBtn)
 //
-//        for (i in languageArrayList!!.indices) {
-//            popupMenu.menu.add(Menu.NONE, i, i, languageArrayList!![i].languageTitle)
-//        }
-//        popupMenu.show()
-//
-//        popupMenu.setOnMenuItemClickListener { menuItem ->
-//            val position = menuItem.itemId
-//            outputLanguageCode = languageArrayList!![position].languageCode
-//            outputLanguageTitle = languageArrayList!![position].languageTitle
-//
-//            outputLangBtn.text = outputLanguageTitle
-//            if (outputLanguageCode == "ja") {
-//                text2Speech.language = Locale.JAPAN
-//            }
-//            else if (outputLanguageCode == "zh") {
-//                text2Speech.language = Locale.CHINA
-//            }
-//            else{
-//                text2Speech.language = Locale.US
-//            }
-//            Log.d(TAG, "inputLangChoose: Code :$outputLanguageCode, Title:$outputLanguageTitle")
-//            false
-//        }
+
 
         /////////////////////////////
         popupMenu.menu.add("ENGLISH")
